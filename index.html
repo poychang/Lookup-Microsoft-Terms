@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Terminology Lookup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title text-center">Microsoft Terminology Lookup</h1>
+                <div class="input-group mb-3">
+                    <input type="text" id="termInput" class="form-control" placeholder="Enter term (English or Chinese)">
+                    <button id="searchButton" class="btn btn-primary">Search</button>
+                </div>
+                <div id="result" class="mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+    <script>
+        fetch('data/terms.tbx')
+            .then(response => response.text())
+            .then(tbxData => {
+                // Parse the XML data.
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(tbxData, "application/xml");
+
+                // Extract term data and store in an array.
+                const termEntries = xmlDoc.getElementsByTagName("termEntry");
+                const terms = [];
+                for (let i = 0; i < termEntries.length; i++) {
+                    const entry = termEntries[i];
+                    const langSets = entry.getElementsByTagName("langSet");
+                    let englishTerm = "";
+                    let chineseTerm = "";
+                    let definition = entry.getElementsByTagName("descrip")[0]?.textContent || "";
+                    for (let j = 0; j < langSets.length; j++) {
+                        const langSet = langSets[j];
+                        const lang = langSet.getAttribute("xml:lang");
+                        const termElement = langSet.getElementsByTagName("term")[0];
+                        if (lang === "en-US") {
+                            englishTerm = termElement.textContent;
+                        } else if (lang === "zh-Hant") {
+                            chineseTerm = termElement.textContent;
+                        }
+                    }
+                    terms.push({
+                        english: englishTerm,
+                        chinese: chineseTerm,
+                        definition: definition
+                    });
+                }
+
+                // Initialize Fuse.js for fuzzy searching.
+                const options = {
+                    keys: ['english', 'chinese'],
+                    threshold: 0.3, // Adjust this value to control fuzzy matching sensitivity
+                };
+                const fuse = new Fuse(terms, options);
+
+                // Function to perform the search.
+                function performSearch() {
+                    const term = document.getElementById("termInput").value.trim();
+                    if (term) {
+                        const results = fuse.search(term);
+                        if (results.length > 0) {
+                            let resultHTML = "";
+                            results.forEach(result => {
+                                const item = result.item;
+                                resultHTML += `
+                                    <div class='card mb-3'>
+                                        <div class='card-body'>
+                                            <h5 class='card-title'>${item.english} / ${item.chinese}</h5>
+                                            <p class='card-text'><strong>Definition:</strong> ${item.definition}</p>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            document.getElementById("result").innerHTML = resultHTML;
+                        } else {
+                            document.getElementById("result").innerHTML = `<p class='text-danger'>No results found.</p>`;
+                        }
+                    }
+                }
+
+                // Event listener for the search button.
+                document.getElementById("searchButton").addEventListener("click", performSearch);
+
+                // Event listener for the enter key in the input field.
+                document.getElementById("termInput").addEventListener("keypress", (e) => {
+                    if (e.key === "Enter") {
+                        performSearch();
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching terms.tbx:', error);
+            });
+    </script>
+    <footer class="text-center mt-5 fixed-bottom bg-light py-3">
+        <p>Made by Poy Chang with ChatGPT</p>
+        <p>Data Source: <a href="https://download.microsoft.com/download/b/2/d/b2db7a7c-8d33-47f3-b2c1-ee5e6445cf45/MicrosoftTermCollection.zip" target="_blank">Microsoft Term Collection</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<martif type="TBX" xml:lang="en-US">
+    <martifHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Microsoft Terminology Collection Export</title>
+            </titleStmt>
+            <sourceDesc>
+                <p>Microsoft Terminology Collection</p>
+            </sourceDesc>
+        </fileDesc>
+    </martifHeader>
+    <text>
+        <body>
+            <termEntry id="3344_38882_38896">
+                <langSet xml:lang="en-US">
+                    <descripGrp>
+                        <descrip type="definition">The state that is implicitly associated with a given COM+ object. The context contains information about the execution environment of an object, such as the identity of the creator of an object and, optionally, the transaction encompassing the work of the object.</descrip>
+                    </descripGrp>
+                    <ntig>
+                        <termGrp>
+                            <term id="38882">context</term>
+                            <termNote type="partOfSpeech">Noun</termNote>
+                            <termNote type="grammaticalNumber">Singular</termNote>
+                        </termGrp>
+                    </ntig>
+                </langSet>
+                <langSet xml:lang="zh-Hant">
+                    <ntig>
+                        <termGrp>
+                            <term id="38896">上下文</term>
+                            <termNote type="geographicalUsage">TWN</termNote>
+                            <termNote type="partOfSpeech">Noun</termNote>
+                            <termNote type="grammaticalGender">Not Selected</termNote>
+                            <termNote type="grammaticalNumber">Not Selected</termNote>
+                        </termGrp>
+                    </ntig>
+                </langSet>
+            </termEntry>
+            <termEntry id="19240_652212_670671">
+                <langSet xml:lang="en-US">
+                    <descripGrp>
+                        <descrip type="definition">A number that Project automatically assigns to a task as you add it to the project. The task ID indicates the position of the task with respect to the other tasks.</descrip>
+                    </descripGrp>
+                    <ntig>
+                        <termGrp>
+                            <term id="652212">task ID</term>
+                            <termNote type="partOfSpeech">Noun</termNote>
+                            <termNote type="grammaticalNumber">Singular</termNote>
+                        </termGrp>
+                    </ntig>
+                </langSet>
+                <langSet xml:lang="zh-Hant">
+                    <ntig>
+                        <termGrp>
+                            <term id="670671">任務識別碼</term>
+                            <termNote type="geographicalUsage">TWN</termNote>
+                            <termNote type="partOfSpeech">Noun</termNote>
+                            <termNote type="grammaticalGender">Not Selected</termNote>
+                            <termNote type="grammaticalNumber">Not Selected</termNote>
+                        </termGrp>
+                    </ntig>
+                </langSet>
+            </termEntry>
+        </body>
+    </text>
+</martif>
