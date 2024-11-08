@@ -1,4 +1,4 @@
-# Lookup Microsof Terms
+# Lookup Microsoft Terms
 
 原本 Microsoft 有提供 Microsoft Terminology 的查詢網站，可以查詢 Microsoft 的術語，但是現在已經無法使用了。
 
