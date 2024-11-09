@@ -20,6 +20,16 @@
                         placeholder="Enter term (English or Chinese)">
                     <button id="searchButton" class="btn btn-primary">Search</button>
                 </div>
+                <!-- Floating window for translation -->
+                <div id="floatingWindow"
+                    class="position-fixed top-50 start-50 translate-middle bg-white border shadow-lg"
+                    style="width: 80%; height: 80%; display: none; z-index: 1050;">
+                    <div class="d-flex justify-content-end p-2">
+                        <button id="closeFloatingWindow" class="btn-close"></button>
+                    </div>
+                    <iframe id="floatingIframe" src="" frameborder="0"
+                        style="width: 100%; height: calc(100% - 40px);"></iframe>
+                </div>
                 <div id="result" class="mt-4"></div>
             </div>
         </div>
@@ -82,7 +92,7 @@
                                         <div class='card-body'>
                                             <h5 class='card-title'>${item.english} / ${item.chinese}</h5>
                                             <p class='card-text'><strong>Definition:</strong> ${item.definition}</p>
-                                            <a href="https://www.bing.com/translator?text=${item.definition}&from=en&to=zh-Hant" target="_blank" class="text-decoration-none">Translate Definition with Bing</a>
+                                            <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${item.definition}&from=en&to=zh-Hant">Translate Definition with Bing</a>
                                         </div>
                                     </div>
                                 `;
@@ -102,6 +112,25 @@
                     if (e.key === "Enter") {
                         performSearch();
                     }
+                });
+
+                // Event listener for the translation link to open in a floating window.
+                document.addEventListener("click", function (e) {
+                    if (e.target.classList.contains("translate-link")) {
+                        e.preventDefault();
+                        const url = e.target.getAttribute("data-url");
+                        const floatingWindow = document.getElementById("floatingWindow");
+                        const iframe = document.getElementById("floatingIframe");
+                        iframe.src = url;
+                        floatingWindow.style.display = "block";
+                    }
+                });
+
+                // Event listener to close the floating window.
+                document.getElementById("closeFloatingWindow").addEventListener("click", function () {
+                    const floatingWindow = document.getElementById("floatingWindow");
+                    floatingWindow.style.display = "none";
+                    document.getElementById("floatingIframe").src = "";
                 });
             })
             .catch(error => {
