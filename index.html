@@ -91,6 +91,14 @@
                 };
                 const fuse = new Fuse(terms, options);
 
+                // Check if there is a search query in the URL.
+                const urlParams = new URLSearchParams(window.location.search);
+                const query = urlParams.get('q');
+                if (query) {
+                    document.getElementById("termInput").value = query;
+                    performSearch();
+                }
+
                 // Function to perform the search.
                 function performSearch() {
                     const term = document.getElementById("termInput").value.trim();
