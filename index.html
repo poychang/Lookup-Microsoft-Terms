@@ -40,8 +40,6 @@
                     <div class="d-flex justify-content-end p-2">
                         <button id="closeFloatingWindow" class="btn-close"></button>
                     </div>
-                    <iframe id="floatingIframe" src="" frameborder="0"
-                        style="width: 100%; height: calc(100% - 40px);"></iframe>
                 </div>
                 <div id="result" class="mt-4"></div>
             </div>
@@ -141,8 +139,16 @@
                         e.preventDefault();
                         const url = e.target.getAttribute("data-url");
                         const floatingWindow = document.getElementById("floatingWindow");
-                        const iframe = document.getElementById("floatingIframe");
+
+                        // Create an iframe to display the translation.
+                        const iframe = document.createElement("iframe");
+                        iframe.id = "floatingIframe";
                         iframe.src = url;
+                        iframe.frameBorder = "0";
+                        iframe.style.width = "100%";
+                        iframe.style.height = "calc(100% - 40px)";
+                        floatingWindow.appendChild(iframe);
+
                         floatingWindow.style.display = "block";
                     }
                 });
@@ -151,7 +157,12 @@
                 document.getElementById("closeFloatingWindow").addEventListener("click", function () {
                     const floatingWindow = document.getElementById("floatingWindow");
                     floatingWindow.style.display = "none";
-                    document.getElementById("floatingIframe").src = "";
+
+                    // Remove the iframe.
+                    const iframe = document.getElementById("floatingIframe");
+                    if (iframe) {
+                        iframe.remove();
+                    }
                 });
             })
             .catch(error => {
