@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <a href="https://github.com/poychang/Lookup-Microsoft-Terms" class="github-corner"
+    <a href="https://github.com/poychang/Lookup-Microsoft-Terms" target="_blank" class="github-corner"
         aria-label="View source on GitHub">
         <svg width="80" height="80" viewBox="0 0 250 250"
             style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
@@ -68,6 +68,7 @@
                 const options = {
                     keys: ['english', 'chinese'],
                     threshold: 0.3, // Adjust this value to control fuzzy matching sensitivity
+                    includeScore: true,
                 };
                 const fuse = new Fuse(terms, options);
 
@@ -86,8 +87,24 @@
                         const results = fuse.search(term);
                         if (results.length > 0) {
                             let resultHTML = "";
+                            // Filter out results with a score greater than 0.1.
+                            const filteredResults = results.filter(result => result.score <= 0.1);
+                            console.log(results);
+                            console.log(filteredResults);
+                            if (filteredResults.length === 0) {
+                                resultHTML += `
+                                    <div class='card mb-3'>
+                                        <div class='card-body'>
+                                            <p class='card-title'>
+                                                <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${term}">Translate '${term}' with Bing</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+
                             results.forEach(result => {
-                                resultHTML += createResultCard(result.item);
+                                resultHTML += createResultCard(result.item, result.score.toFixed(2));
                             });
                             document.getElementById("result").innerHTML = resultHTML;
                         } else {
@@ -97,11 +114,18 @@
                 }
 
                 // Function to create a result card.
-                function createResultCard(item) {
+                function createResultCard(item, score) {
+                    const percentageScore = ((1 - score) * 100) + '%';
                     return `
                         <div class='card mb-3'>
                             <div class='card-body'>
-                                <h5 class='card-title'>${item.english} / ${item.chinese}</h5>
+                                <h5 class='card-title'>
+                                    ${item.english} / ${item.chinese}
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                                        ${percentageScore}
+                                        <span class="visually-hidden">score</span>
+                                    </span>
+                                </h5>
                                 <p class='card-text'><strong>Definition:</strong> ${item.definition}</p>
                                 <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${item.definition}&from=en&to=zh-Hant">Translate Definition with Bing</a>
                             </div>
