@@ -96,7 +96,7 @@
                                     <div class='card mb-3'>
                                         <div class='card-body'>
                                             <p class='card-title'>
-                                                <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${term}">Translate '${term}' with Bing</a>
+                                                Translate '${term}' with <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${term}">Bing</a> or <a href="https://chatgpt.com/?hints=search&temporary-chat=true&q=中英翻譯以下內容：${term}" target="_blank" class="text-decoration-none">ChatGPT</a>
                                             </p>
                                         </div>
                                     </div>
@@ -127,7 +127,9 @@
                                     </span>
                                 </h5>
                                 <p class='card-text'><strong>Definition:</strong> ${item.definition}</p>
-                                <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${item.definition}&from=en&to=zh-Hant">Translate Definition with Bing</a>
+                                <p>Translate Definition with 
+                                    <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${item.definition}&from=en&to=zh-Hant">Bing</a> or <a href="https://chatgpt.com/?hints=search&temporary-chat=true&q=中英翻譯以下內容：${item.definition}" target="_blank" class="text-decoration-none">ChatGPT</a>
+                                </p>
                             </div>
                         </div>
                     `;
