@@ -89,8 +89,6 @@
                             let resultHTML = "";
                             // Filter out results with a score greater than 0.1.
                             const filteredResults = results.filter(result => result.score <= 0.1);
-                            console.log(results);
-                            console.log(filteredResults);
                             if (filteredResults.length === 0) {
                                 resultHTML += `
                                     <div class='card mb-3'>
@@ -104,7 +102,7 @@
                             }
 
                             results.forEach(result => {
-                                resultHTML += createResultCard(result.item, result.score.toFixed(2));
+                                resultHTML += createResultCard(result);
                             });
                             document.getElementById("result").innerHTML = resultHTML;
                         } else {
@@ -114,21 +112,21 @@
                 }
 
                 // Function to create a result card.
-                function createResultCard(item, score) {
-                    const percentageScore = ((1 - score) * 100) + '%';
+                function createResultCard(result) {
+                    const similarity = ((1 - result.score) * 100).toFixed(0) + '%';
                     return `
                         <div class='card mb-3'>
                             <div class='card-body'>
                                 <h5 class='card-title'>
-                                    ${item.english} / ${item.chinese}
+                                    ${result.item.english} / ${result.item.chinese}
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-                                        ${percentageScore}
+                                        ${similarity}
                                         <span class="visually-hidden">score</span>
                                     </span>
                                 </h5>
-                                <p class='card-text'><strong>Definition:</strong> ${item.definition}</p>
+                                <p class='card-text'><strong>Definition:</strong> ${result.item.definition}</p>
                                 <p>Translate Definition with 
-                                    <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${item.definition}&from=en&to=zh-Hant">Bing</a> or <a href="https://chatgpt.com/?hints=search&temporary-chat=true&q=中英翻譯以下內容：${item.definition}" target="_blank" class="text-decoration-none">ChatGPT</a>
+                                    <a href="#" class="text-decoration-none translate-link" data-url="https://www.bing.com/translator?text=${result.item.definition}&from=en&to=zh-Hant">Bing</a> or <a href="https://chatgpt.com/?hints=search&temporary-chat=true&q=中英翻譯以下內容：${result.item.definition}" target="_blank" class="text-decoration-none">ChatGPT</a>
                                 </p>
                             </div>
                         </div>
@@ -187,7 +185,7 @@
                 });
             })
             .catch(error => {
-                console.error('Error fetching terms.xml:', error);
+                console.error('Error fetching terms.json:', error);
             });
     </script>
 </body>
